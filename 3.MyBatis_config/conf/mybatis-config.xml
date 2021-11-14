@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <!--1.和Spring的context：property-placeholder类似：引用外部配置文件 -->
+  <!--
+    resource: 从类路径下开始引用
+    url：引用磁盘路径或者网络路径资源
+  -->
+  <properties resource="dbconfig.properties"></properties>
+
+  <!--2.这是 MyBatis 中极为重要的调整设置，它们会改变 MyBatis 的运行时行为-->
+  <settings>
+    <!--name：配置项的key  value：配置项的值-->
+    <!--  loginAccount  login_account  -->
+    <setting name="mapUnderscoreToCamelCase" value="true"/>
+  </settings>
+
+  <!--3.类型别名;为常用类型(javabean)起别名-->
+  <typeAliases>
+    <!--typeAlias：就是为一个javabean起别名：别名默认就是类名(不区分大小写)，配置文件中就可以用别名了-->
+    <!--alias="" 指定一个别名-->
+<!--    <typeAlias type="com.clearlove.bean.Employee" alias="emp"></typeAlias>-->
+
+  <!--批量起别名 name="" 指定包名,默认别名就是类名-->
+    <package name="com.clearlove.bean"/>
+  <!--推荐用全类名-->
+  </typeAliases>
+
+  <!--4.类型处理器-->
+  <!--  -->
+<!--  <typeHandlers>-->
+<!--    &lt;!&ndash;自定义好的类型处理器就这么配置上就行了&ndash;&gt;-->
+<!--    <typeHandler handler=""></typeHandler>-->
+<!--  </typeHandlers>-->
+
+
+  <!--5.插件是mybatis中的一个强大功能-->
+
+  <!--6.environments配置多个环境
+          environment：配置一个具体的环境。都需要一个事务管理器和一个数据源
+            transactionManager：
+          后来数据源，和事务管理都是Spring来做
+  -->
+    <!--default="development" 默认使用哪个环境-->
+    <environments default="development">
+      <!--id="testEnv  id是当前环境的唯一标识-->
+      <environment id="testEnv">
+        <transactionManager type="JDBC">
+        </transactionManager>
+        <dataSource type="POOLED">
+          <!--${}取出配置文件中的值-->
+          <property name="driver" value="${driverclass}"/>
+          <property name="url" value="jdbc:mysql://192.168.10.165:3306/mybatis_test"/>
+          <property name="username" value="${username}"/>
+          <property name="password" value="${password}"/>
+        </dataSource>
+      </environment>
+      
+      
+      
+      <environment id="development">
+        <transactionManager type="JDBC"/>
+        <dataSource type="POOLED">
+          <!--${}取出配置文件中的值-->
+          <property name="driver" value="${driverclass}"/>
+          <property name="url" value="${jdbcurl}"/>
+          <property name="username" value="${username}"/>
+          <property name="password" value="${password}"/>
+        </dataSource>
+      </environment>
+    </environments>
+
+    <!--6.mabatis用来考虑数据库移植性-->
+    <databaseIdProvider type="DB_VENDOR">
+      <!--name: 数据库厂商标识  value:给这个标识起一个好用的名字
+          MYSQL、Oracle、SQL Server
+      -->
+      <property name="MySQL" value="mysql"/>
+      <property name="SQL Server" value="sqlserver"/>
+      <property name="Oracle" value="orcl"/>
+    </databaseIdProvider>
+
+
+    <!--7.写好的sql映射文件需要使用mappers注册进来-->
+    <mappers>
+    <!--
+      class：直接引用接口的全类名
+          可以将xml放在和dao接口同目录下，而且文件名和接口名一致
+          class的另一种用法
+      resource：在类路径下找sql映射文件
+      url：可以从磁盘或者网络路径引用
+       -->
+<!--      <mapper class="com.clearlove.dao.EmployeeDao"></mapper>-->
+<!--      <mapper class="com.clearlove.dao.EmployeeDaoAnnotation"></mapper>-->
+<!--       <mapper resource="mybatis/EmployeeDao.xml"></mapper>-->
+    <!--配合使用：重要的dao可以写配置
+                  简单的dao就直接标注解
+    -->
+    <!--批量注册 name：dao所在的包名-->
+      <package name="com.clearlove.dao"/>
+    </mappers>
+
+
+</configuration>
