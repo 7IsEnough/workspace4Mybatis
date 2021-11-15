@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+
+  <!--6.environments配置多个环境
+          environment：配置一个具体的环境。都需要一个事务管理器和一个数据源
+            transactionManager：
+          后来数据源，和事务管理都是Spring来做
+  -->
+    <!--default="development" 默认使用哪个环境-->
+    <environments default="development">
+
+      
+      <environment id="development">
+        <transactionManager type="JDBC"/>
+        <dataSource type="POOLED">
+          <!--${}取出配置文件中的值-->
+          <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+          <property name="url" value="jdbc:mysql://localhost:3306/mybatis_0325?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true"/>
+          <property name="username" value="root"/>
+          <property name="password" value="1234"/>
+        </dataSource>
+      </environment>
+    </environments>
+
+
+
+    <!--7.写好的sql映射文件需要使用mappers注册进来-->
+    <mappers>
+    <!--
+      class：直接引用接口的全类名
+          可以将xml放在和dao接口同目录下，而且文件名和接口名一致
+          class的另一种用法
+      resource：在类路径下找sql映射文件
+      url：可以从磁盘或者网络路径引用
+       -->
+<!--      <mapper class="com.clearlove.dao.EmployeeDao"></mapper>-->
+<!--      <mapper class="com.clearlove.dao.EmployeeDaoAnnotation"></mapper>-->
+<!--       <mapper resource="mybatis/EmployeeDao.xml"></mapper>-->
+    <!--配合使用：重要的dao可以写配置
+                  简单的dao就直接标注解
+    -->
+    <!--批量注册 name：dao所在的包名-->
+      <package name="com.clearlove.dao"/>
+    </mappers>
+
+
+</configuration>
