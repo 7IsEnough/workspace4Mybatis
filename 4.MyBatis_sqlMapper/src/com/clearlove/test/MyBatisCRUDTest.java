@@ -57,8 +57,11 @@ public class MyBatisCRUDTest {
     SqlSession openSession = sqlSessionFactory.openSession(true);
     try {
       EmployeeDao mapper = openSession.getMapper(EmployeeDao.class);
-      int i = mapper.insertEmployee(new Employee(null, "tomcat", "tomcat@qq.com", 0));
+      Employee employee = new Employee(null, "haha", "aaa", 0);
+      int i = mapper.insertEmployee(employee);
       System.out.println(i);
+      System.out.println("刚才插入的id："+employee.getId());
+      openSession.commit();
     } finally {
       // 手动提交
 //      openSession.commit();
