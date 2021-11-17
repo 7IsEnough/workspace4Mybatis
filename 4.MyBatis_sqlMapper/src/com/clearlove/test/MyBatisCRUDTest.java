@@ -5,6 +5,8 @@ import com.clearlove.dao.EmployeeDao;
 import com.clearlove.dao.EmployeeDaoAnnotation;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -58,9 +60,32 @@ public class MyBatisCRUDTest {
     try {
       EmployeeDao mapper = openSession.getMapper(EmployeeDao.class);
       Employee employee = new Employee(null, "haha", "aaa", 0);
-      int i = mapper.insertEmployee(employee);
+//      int i = mapper.insertEmployee(employee);
+      int i = mapper.insertEmployee2(employee);
       System.out.println(i);
       System.out.println("刚才插入的id："+employee.getId());
+      openSession.commit();
+    } finally {
+      // 手动提交
+//      openSession.commit();
+      openSession.close();
+    }
+  }
+
+
+  @Test
+  public void test02() {
+    // true代表自动提交
+    SqlSession openSession = sqlSessionFactory.openSession(true);
+    try {
+      EmployeeDao mapper = openSession.getMapper(EmployeeDao.class);
+      Employee employee = mapper.getEmpByIdAndEmpName(1, "admin");
+      System.out.println(employee);
+      Map<String,Object> map = new HashMap<>();
+      map.put("id", 1);
+      map.put("empName", "admin");
+      Employee name = mapper.getEmployeeByIdAndEmpName(map);
+      System.out.println(name);
       openSession.commit();
     } finally {
       // 手动提交

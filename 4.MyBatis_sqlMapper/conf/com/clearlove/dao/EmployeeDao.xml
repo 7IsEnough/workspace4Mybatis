@@ -25,6 +25,7 @@
    #{属性名}: 代表取出传递过来的某个参数的值
     -->
   <!--默认这个查询是不区分环境-->
+  <!--传参到底能传哪些-->
   <select id="getEmpById" resultType="com.clearlove.bean.Employee">
     <!--sql语句不要写分号-->
     select * from t_employee where id=#{id}
@@ -40,6 +41,53 @@
 <!--    &lt;!&ndash;sql语句不要写分号&ndash;&gt;-->
 <!--    select * from t_employee where id=#{id}-->
 <!--  </select>-->
+
+
+  <!--public Employee getEmpByIdAndEmpName(Integer id, String empName);-->
+  <!--Caused by: org.apache.ibatis.binding.BindingException:
+  Parameter 'id' not found. Available parameters are [0, 1, param1, param2]-->
+  <select id="getEmpByIdAndEmpName" resultType="com.clearlove.bean.Employee">
+    select * from t_employee where id=#{id} and empname=#{empName}
+  </select>
+
+  <!--public Employee getEmployeeByIdAndEmpName(Map<String, Object> map);-->
+  <select id="getEmployeeByIdAndEmpName" resultType="com.clearlove.bean.Employee">
+    select * from t_employee where id=#{id} and empname=#{empName}
+  </select>
+
+  <!--现象：
+    1. 单个参数
+        基本类型：
+            取值：#{随便写}
+        传入pojo：
+    2. 多个参数
+        取值：#{参数名}是无效的
+        可用：0,1(参数的索引) 或者param1,param2(第n个参数paramN)
+        原因：只要传入了多个参数，mybatis会自动的将这些参数封装在一个map中；
+              封装时使用的key就是参数的索引和参数的第几个标识
+              Map<String, Object> map = new HashMap();
+              map.put("1",传入的值);
+              map.put("2",传入的值);
+         #{key}就是从这个map中取值；
+
+    3. @Param：为参数指定key；命名参数；以后也推荐这么做
+       可以告诉mybatis，封装参数map的时候别乱来，使用我们指定的key
+
+    4. 传入了pojo(javaBean)
+       取值：#{pojo的属性名}
+
+    5. 传入了map：将多个要使用的参数封装起来
+       取值：#{key}
+
+    扩展：多个参数：自动封装map
+    method01(@Param("id")Integer id, String empName, Employee employee);
+    Integer id -> #{id}
+    String empName -> #{param2}
+    Employee employee(取出这个里面的email) -> #{param3.email}
+
+    无论传入怎样的参数都要能正确的取出值
+    #{key/属性名}
+  -->
 
 
   <!--public int updateEmployee(Employee employee);
@@ -64,7 +112,23 @@
     keyProperty:将刚才自增的id封装给哪个属性
   -->
   <insert id="insertEmployee" useGeneratedKeys="true" keyProperty="id">
+
+    <selectKey order="BEFORE" keyProperty="id">
+
+    </selectKey>
     insert into t_employee(empname,gender,email) values (#{empName},#{gender},#{email})
+  </insert>
+
+
+  <!--public int insertEmployee2(Employee employee);-->
+  <insert id="insertEmployee2">
+    <!--查询主键
+    order："BEFORE" 在核心sql语句之前先运行一个查询sql查到id;将查到的id赋值给javaBean的哪个属性
+    -->
+    <selectKey order="BEFORE" resultType="integer" keyProperty="id">
+        select max(id)+1 from t_employee
+    </selectKey>
+    insert into t_employee(id,empname,gender,email) values (#{id},#{empName},#{gender},#{email})
   </insert>
 
 </mapper>
