@@ -1,6 +1,7 @@
 package com.clearlove.dao;
 
 import com.clearlove.bean.Employee;
+import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
@@ -10,9 +11,11 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface EmployeeDao {
 
+  List<Employee> getAllEmps();
+
   public Employee getEmpById(Integer id);
 
-  public Employee getEmpByIdAndEmpName(@Param("id") Integer id, @Param("empName") String empName);
+  Employee getEmpByIdAndEmpName(@Param("id") Integer id, @Param("empName") String empName);
 
   public Employee getEmployeeByIdAndEmpName(Map<String, Object> map);
 

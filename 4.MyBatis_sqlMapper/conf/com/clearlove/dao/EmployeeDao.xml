@@ -52,7 +52,7 @@
 
   <!--public Employee getEmployeeByIdAndEmpName(Map<String, Object> map);-->
   <select id="getEmployeeByIdAndEmpName" resultType="com.clearlove.bean.Employee">
-    select * from t_employee where id=#{id} and empname=#{empName}
+    select * from ${tableName} where id=#{id} and empname=#{empName}
   </select>
 
   <!--现象：
@@ -87,7 +87,36 @@
 
     无论传入怎样的参数都要能正确的取出值
     #{key/属性名}
+    1)#{key}取值的时候可以设置一些规则；
+        id=#{id, jdbcType=INTEGER}
+        javaType、jdbcType、mode、numericScale、resultMap、typeHandle、jdbcTypeName、expression
+        只有jdbcType才可能是需要被指定的
+            默认不指定jdbcType；mysql没问题；oracle没问题；
+            万一传入的数据是Null；
+            mysql插入Null没问题；oracle不知道null到底是什么类型
+
+     实际上在mybatis中；两种取值方式；
+     #{属性名}：是参数预编译的方式，参数的位置都是用?替代，参数后来都是预编译设置进去的
+               安全，不会有sql注入问题
+     ${属性名}：不是参数预编译，而是直接和sql语句进行拼串 不安全
+                传入'1 or 1=1 or'
+                id=1 or 1=1 or and empname=
+                sql语句只有参数位置是支持预编译的
+
+     一般都是使用#{}；安全；在不支持参数预编译的位置要进行取值就使用${}
+
+     id=${id} and empname=#{empName}
+     select * from t_employee where id=1 and empname=?
+
+     id=#{id} and empname=#{empName}
+     select * from t_employee where id=? and empname=?
   -->
+
+  <!--List<Employee> getAllEmps();-->
+  <!--resultType=""，如果返回的是集合，写的是集合里面元素的类型-->
+  <select id="getAllEmps" resultType="com.clearlove.bean.Employee">
+    select * from t_employee
+  </select>
 
 
   <!--public int updateEmployee(Employee employee);
