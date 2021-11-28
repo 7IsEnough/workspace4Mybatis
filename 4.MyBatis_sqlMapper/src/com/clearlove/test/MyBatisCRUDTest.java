@@ -1,6 +1,8 @@
 package com.clearlove.test;
 
+import com.clearlove.bean.Cat;
 import com.clearlove.bean.Employee;
+import com.clearlove.dao.CatDao;
 import com.clearlove.dao.EmployeeDao;
 import com.clearlove.dao.EmployeeDaoAnnotation;
 import java.io.IOException;
@@ -103,10 +105,47 @@ public class MyBatisCRUDTest {
     SqlSession openSession = sqlSessionFactory.openSession(true);
     try {
       EmployeeDao mapper = openSession.getMapper(EmployeeDao.class);
-      List<Employee> allEmps = mapper.getAllEmps();
-      for (Employee employee : allEmps) {
-        System.out.println(employee);
-      }
+
+      // 查询多条记录封装List
+//      List<Employee> allEmps = mapper.getAllEmps();
+//      for (Employee employee : allEmps) {
+//        System.out.println(employee);
+//      }
+
+      // 查询单条记录封装map
+//      Map<String, Object> map = mapper.getEmpByIdReturnMap(1);
+//      System.out.println(map);
+
+
+      // 查询多条记录封装map
+      Map<Integer, Employee> map = mapper.getAllEmpsReturnMap();
+      System.out.println(map);
+
+      openSession.commit();
+    } finally {
+      // 手动提交
+//      openSession.commit();
+      openSession.close();
+    }
+  }
+
+
+  /**
+   * 默认mybatis自动封装结果集；
+   * 1)、按照列名和属性名一一对应的规则(不区分大小写)
+   * 2)、如果不一一对应
+   *      1.开启驼峰命名法(满足驼峰命名规则 aaa_bbb  aaaBbb)
+   *      2.起别名
+   */
+  @Test
+  public void test04() {
+    // true代表自动提交
+    SqlSession openSession = sqlSessionFactory.openSession(true);
+    try {
+      CatDao mapper = openSession.getMapper(CatDao.class);
+      Cat catById = mapper.getCatById(1);
+      System.out.println(catById);
+
       openSession.commit();
     } finally {
       // 手动提交
