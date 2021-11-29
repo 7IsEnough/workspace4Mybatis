@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.clearlove.dao.KeyDao">
+
+  <!--public Key getKeyById(Integer id);-->
+  <!--
+    private Integer id;
+
+    private String keyName;
+
+    private Lock lock;
+
+    id|keyname|lockid|lid|lockName|
+
+    -->
+   <select id="getKeyById" resultMap="mykey">
+     select k.id,k.keyname, k.lockid, l.id lid, l.lockName from t_key k
+     left join t_lock l
+     on k.lockid = l.id
+     where k.id = #{id}
+   </select>
+
+  <!--自定义封装规则: 使用级联属性封装联合查询出的结果-->
+<!--  <resultMap id="mykey" type="com.clearlove.bean.Key">-->
+<!--    <id property="id" column="id"></id>-->
+<!--    <result property="keyName" column="keyname"></result>-->
+<!--    <result property="lock.id" column="lid"></result>-->
+<!--    <result property="lock.lockName" column="lockName"></result>-->
+
+<!--  </resultMap>-->
+
+
+  <!--mybatis推荐的    <association property=""></association>-->
+  <resultMap id="mykey" type="com.clearlove.bean.Key">
+    <id property="id" column="id"></id>
+    <result property="keyName" column="keyname"></result>
+    <!--接下来的属性是一个对象，自定义这个对象的封装规则；使用association；表示联合了一个对象-->
+    <!--javaType="com.clearlove.bean.Lock": 指定写这个属性的类型-->
+    <association property="lock" javaType="com.clearlove.bean.Lock">
+      <!--定义lock属性对应的这个Lock对象如何封装-->
+      <id property="id" column="lid"></id>
+      <result property="lockName" column="lockName"></result>
+    </association>
+  </resultMap>
+</mapper>

@@ -2,9 +2,11 @@ package com.clearlove.test;
 
 import com.clearlove.bean.Cat;
 import com.clearlove.bean.Employee;
+import com.clearlove.bean.Key;
 import com.clearlove.dao.CatDao;
 import com.clearlove.dao.EmployeeDao;
 import com.clearlove.dao.EmployeeDaoAnnotation;
+import com.clearlove.dao.KeyDao;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -146,6 +148,27 @@ public class MyBatisCRUDTest {
       Cat catById = mapper.getCatById(1);
       System.out.println(catById);
 
+      openSession.commit();
+    } finally {
+      // 手动提交
+//      openSession.commit();
+      openSession.close();
+    }
+  }
+
+
+  /**
+   * 联合查询情况下
+   * 1.使用级联属性封装联合查询后的所有结果
+   */
+  @Test
+  public void test05() {
+    // true代表自动提交
+    SqlSession openSession = sqlSessionFactory.openSession(true);
+    try {
+      KeyDao mapper = openSession.getMapper(KeyDao.class);
+      Key keyById = mapper.getKeyById(2);
+      System.out.println(keyById);
       openSession.commit();
     } finally {
       // 手动提交
