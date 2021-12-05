@@ -3,10 +3,12 @@ package com.clearlove.test;
 import com.clearlove.bean.Cat;
 import com.clearlove.bean.Employee;
 import com.clearlove.bean.Key;
+import com.clearlove.bean.Lock;
 import com.clearlove.dao.CatDao;
 import com.clearlove.dao.EmployeeDao;
 import com.clearlove.dao.EmployeeDaoAnnotation;
 import com.clearlove.dao.KeyDao;
+import com.clearlove.dao.LockDao;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -169,6 +171,26 @@ public class MyBatisCRUDTest {
       KeyDao mapper = openSession.getMapper(KeyDao.class);
       Key keyById = mapper.getKeyById(2);
       System.out.println(keyById);
+      openSession.commit();
+    } finally {
+      // 手动提交
+//      openSession.commit();
+      openSession.close();
+    }
+  }
+
+  @Test
+  public void test06() {
+    // true代表自动提交
+    SqlSession openSession = sqlSessionFactory.openSession(true);
+    try {
+      LockDao mapper = openSession.getMapper(LockDao.class);
+      Lock lock = mapper.getLockById(3);
+      System.out.println(lock);
+      System.out.println("所有锁如下：");
+      for (Key key : lock.getKeys()) {
+        System.out.println(key);
+      }
       openSession.commit();
     } finally {
       // 手动提交

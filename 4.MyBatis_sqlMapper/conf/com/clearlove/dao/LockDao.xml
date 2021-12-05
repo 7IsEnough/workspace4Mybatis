@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.clearlove.dao.LockDao">
+
+  <!--public Lock getLockById(Integer id);-->
+  <select id="getLockById" resultMap="mylock">
+    select l.*,k.id kid, k.keyname, k.lockid from t_lock l
+    left join t_key k
+    on l.id = k.lockid
+    where l.id = #{id}
+  </select>
+
+
+<!--
+  private Integer id;
+
+  private String lockName;
+
+  // 查询锁的时候把所有的钥匙也查出来
+  private List<Key> keys;
+
+  -->
+  <resultMap id="mylock" type="com.clearlove.bean.Lock">
+    <id property="id" column="id"></id>
+    <result property="lockName" column="lockName"></result>
+
+    <!--
+      collection：定义集合元素的封装
+      property:指定哪个属性是集合属性
+      javaType:指定对象类型(只在association标签中使用)
+      ofType:指定集合里面元素的类型
+    -->
+    <collection property="keys" ofType="com.clearlove.bean.Key">
+      <!--标签体中指定集合中这个元素的封装规则-->
+      <id property="id" column="kid"></id>
+      <result property="keyName" column="keyname"></result>
+    </collection>
+  </resultMap>
+
+
+
+</mapper>
