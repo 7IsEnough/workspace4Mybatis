@@ -31,6 +31,7 @@ public class MyBatisCRUDTest {
   SqlSessionFactory sqlSessionFactory;
 
 
+
   @Before
   public void initSqlSessionFactory() throws IOException {
     String resource = "mybatis-config.xml";
@@ -197,6 +198,15 @@ public class MyBatisCRUDTest {
 //      openSession.commit();
       openSession.close();
     }
+  }
+
+
+  /**
+   * 分布查询
+   */
+  @Test
+  public void test07() {
+
   }
 
 
