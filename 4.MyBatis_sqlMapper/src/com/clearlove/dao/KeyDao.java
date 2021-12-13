@@ -15,4 +15,6 @@ public interface KeyDao {
    */
   public Key getKeyById(Integer id);
 
+  public Key getKeyByIdSimple(Integer id);
+
 }

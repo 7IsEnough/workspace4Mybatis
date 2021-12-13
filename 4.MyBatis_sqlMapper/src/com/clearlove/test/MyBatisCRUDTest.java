@@ -203,10 +203,25 @@ public class MyBatisCRUDTest {
 
   /**
    * 分布查询
+   * 0. 查询钥匙的时候顺便查出锁
+   * 1. Key key = keyDao.getKeyById();
+   * 2. Lock lock = lockDao.getLockById(1);
    */
   @Test
   public void test07() {
+    // true代表自动提交
+    SqlSession openSession = sqlSessionFactory.openSession(true);
+    try {
+      KeyDao mapper = openSession.getMapper(KeyDao.class);
+      Key keyByIdSimple = mapper.getKeyByIdSimple(1);
+      System.out.println(keyByIdSimple);
 
+      openSession.commit();
+    } finally {
+      // 手动提交
+//      openSession.commit();
+      openSession.close();
+    }
   }
 
 

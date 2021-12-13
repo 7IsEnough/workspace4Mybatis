@@ -14,6 +14,12 @@
   </select>
 
 
+  <!--public Lock getLockByIdSimple(Integer id);-->
+  <select id="getLockByIdSimple" resultType="com.clearlove.bean.Lock">
+    select * from t_lock where id=#{id}
+  </select>
+
+
 <!--
   private Integer id;
 
