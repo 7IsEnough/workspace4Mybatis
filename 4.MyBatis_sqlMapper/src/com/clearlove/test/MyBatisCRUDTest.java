@@ -208,13 +208,19 @@ public class MyBatisCRUDTest {
    * 2. Lock lock = lockDao.getLockById(1);
    */
   @Test
-  public void test07() {
+  public void test07() throws InterruptedException {
     // true代表自动提交
     SqlSession openSession = sqlSessionFactory.openSession(true);
     try {
       KeyDao mapper = openSession.getMapper(KeyDao.class);
       Key keyByIdSimple = mapper.getKeyByIdSimple(1);
-      System.out.println(keyByIdSimple);
+      // 严重性能浪费
+      System.out.println(keyByIdSimple.getKeyName());
+      // 按需加载：需要的时候再去查询；全局开启按需加载策略
+      // 延迟加载：不着急加载(查询对象)
+      Thread.sleep(3000);
+      String lockName = keyByIdSimple.getLock().getLockName();
+      System.out.println(lockName);
 
       openSession.commit();
     } finally {

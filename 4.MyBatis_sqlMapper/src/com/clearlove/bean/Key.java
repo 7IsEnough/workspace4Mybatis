@@ -31,6 +31,14 @@ public class Key {
     this.keyName = keyName;
   }
 
+  public Lock getLock() {
+    return lock;
+  }
+
+  public void setLock(Lock lock) {
+    this.lock = lock;
+  }
+
   @Override
   public String toString() {
     return "Key{" +
