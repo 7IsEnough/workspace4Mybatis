@@ -20,6 +20,21 @@
   </select>
 
 
+  <!--public Lock getLockByIdByStep(Integer id);-->
+  <select id="getLockByIdByStep" resultMap="mylockstep">
+    select * from t_lock where id=#{id}
+  </select>
+  <!--collection分步查询-->
+  <resultMap id="mylockstep" type="com.clearlove.bean.Lock">
+    <id property="id" column="id"></id>
+    <result property="lockName" column="lockName"></result>
+    <!--collection指定集合类型的属性封装规则-->
+    <collection property="keys" select="com.clearlove.dao.KeyDao.getKeysByLockId" column="id">
+
+    </collection>
+  </resultMap>
+
+
 <!--
   private Integer id;
 

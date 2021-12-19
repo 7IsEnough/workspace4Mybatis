@@ -52,9 +52,17 @@
     -->
     <association property="lock"
       select="com.clearlove.dao.LockDao.getLockByIdSimple"
-      column="lockid"
+      column="lockid" fetchType="lazy"
     ></association>
   </resultMap>
+
+
+  <!--public List<Key> getKeysByLockId(Integer id);
+    按照锁的id查找所有钥匙
+  -->
+  <select id="getKeysByLockId" resultType="com.clearlove.bean.Key">
+    select * from t_key where lockid=#{id}
+  </select>
 
 
 

@@ -218,9 +218,39 @@ public class MyBatisCRUDTest {
       System.out.println(keyByIdSimple.getKeyName());
       // 按需加载：需要的时候再去查询；全局开启按需加载策略
       // 延迟加载：不着急加载(查询对象)
-      Thread.sleep(3000);
-      String lockName = keyByIdSimple.getLock().getLockName();
-      System.out.println(lockName);
+//      Thread.sleep(3000);
+//      String lockName = keyByIdSimple.getLock().getLockName();
+//      System.out.println(lockName);
+
+      openSession.commit();
+    } finally {
+      // 手动提交
+//      openSession.commit();
+      openSession.close();
+    }
+  }
+
+  /**
+   * 一般在工作的时候，写成两个方法
+   * public Key getKeySimple(Integer id);
+   *
+   * 推荐写连接查询
+   * public Key getKeyAssociate()
+   */
+  @Test
+  public void test08() {
+    // true代表自动提交
+    SqlSession openSession = sqlSessionFactory.openSession(true);
+    try {
+      LockDao mapper = openSession.getMapper(LockDao.class);
+      Lock lock = mapper.getLockByIdByStep(3);
+      System.out.println(lock.getLockName());
+
+      lock.getKeys()
+          .forEach(
+              key -> {
+                System.out.println(key.getKeyName());
+              });
 
       openSession.commit();
     } finally {
@@ -238,6 +268,8 @@ public class MyBatisCRUDTest {
     Employee empById = mapper.getEmpById(1);
     System.out.println(empById);
   }
+
+
 
 
 

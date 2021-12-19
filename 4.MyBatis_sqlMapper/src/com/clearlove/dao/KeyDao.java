@@ -1,6 +1,7 @@
 package com.clearlove.dao;
 
 import com.clearlove.bean.Key;
+import java.util.List;
 
 /**
  * @author promise
@@ -16,5 +17,7 @@ public interface KeyDao {
   public Key getKeyById(Integer id);
 
   public Key getKeyByIdSimple(Integer id);
+
+  public List<Key> getKeysByLockId(Integer id);
 
 }
