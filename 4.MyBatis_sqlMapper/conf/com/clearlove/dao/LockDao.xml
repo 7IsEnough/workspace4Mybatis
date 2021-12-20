@@ -29,9 +29,11 @@
     <id property="id" column="id"></id>
     <result property="lockName" column="lockName"></result>
     <!--collection指定集合类型的属性封装规则-->
-    <collection property="keys" select="com.clearlove.dao.KeyDao.getKeysByLockId" column="id">
-
+    <collection property="keys"
+      select="com.clearlove.dao.KeyDao.getKeysByLockId"
+      column="{id=id}">
     </collection>
+    <!--  {key1=列名(取值的key，类似#{id})，key2=数据库列名}  -->
   </resultMap>
 
 
