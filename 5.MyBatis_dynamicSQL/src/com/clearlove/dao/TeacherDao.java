@@ -1,6 +1,7 @@
 package com.clearlove.dao;
 
 import com.clearlove.bean.Teacher;
+import java.util.List;
 
 /**
  * @author promise
@@ -9,5 +10,7 @@ import com.clearlove.bean.Teacher;
 public interface TeacherDao {
 
   public Teacher getTeacherById(Integer id);
+
+  public List<Teacher> getTeacherByCondition(Teacher teacher);
 
 }

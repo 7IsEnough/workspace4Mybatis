@@ -4,6 +4,8 @@ import com.clearlove.bean.Teacher;
 import com.clearlove.dao.TeacherDao;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
+import java.util.List;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -45,8 +47,14 @@ public class MyBatisCRUDTest {
     try{
 
       TeacherDao mapper = openSession.getMapper(TeacherDao.class);
-      Teacher teacher = mapper.getTeacherById(1);
-      System.out.println(teacher);
+//      Teacher teacher = mapper.getTeacherById(1);
+      Teacher teacher2 = new Teacher();
+      teacher2.setId(1);
+      teacher2.setName("%a%");
+      teacher2.setBirth(new Date());
+      List<Teacher> list = mapper.getTeacherByCondition(teacher2);
+
+      System.out.println(list);
 
     }finally{
       openSession.close();
