@@ -51,7 +51,7 @@ public class MyBatisCRUDTest {
       Teacher teacher2 = new Teacher();
       teacher2.setId(1);
       teacher2.setName("%a%");
-      teacher2.setBirth(new Date());
+//      teacher2.setBirth(new Date());
       List<Teacher> list = mapper.getTeacherByCondition(teacher2);
 
       System.out.println(list);

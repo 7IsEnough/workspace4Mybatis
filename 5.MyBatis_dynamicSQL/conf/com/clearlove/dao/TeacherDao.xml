@@ -23,24 +23,27 @@
   <!--public List<Teacher> getTeacherByCondition(Teacher teacher);-->
   <!--if标签：判断 传入非常强大的判断条件 OGNL表达式-->
   <select id="getTeacherByCondition" resultMap="teacherMap">
-    select * from t_teacher where
+    select * from t_teacher
     <!--test:编写判断条件
     id!=null:取出传入的javaBean属性中的id的值，判断其是否为空
     -->
-    <if test="id!=null">
-        id > #{id} and
-    </if>
-    <!-- 空串：''
-      and: &&
-      or: ||
-    -->
+    <!--可以帮我们去除前面的and-->
+    <where>
+      <if test="id!=null">
+         id > #{id}
+      </if>
+      <!-- 空串：''
+        and: &&
+        or: ||
+      -->
 
-    <if test="name!=null and !name.equals('') ">
-      teacherName like #{name} and
-    </if>
-    <if test="birth!=null">
-      birth_date &lt; #{birth}
-    </if>
+      <if test="name!=null and !name.equals('') ">
+        and teacherName like #{name}
+      </if>
+      <if test="birth!=null">
+        and birth_date &lt; #{birth}
+      </if>
+    </where>
   </select>
 
 
