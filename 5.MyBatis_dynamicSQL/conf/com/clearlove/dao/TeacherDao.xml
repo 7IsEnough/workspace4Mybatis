@@ -28,9 +28,18 @@
     id!=null:取出传入的javaBean属性中的id的值，判断其是否为空
     -->
     <!--可以帮我们去除前面的and-->
-    <where>
+    <!--where-->
+
+    <!--截取字符串
+      prefix="": 前缀：为我们下面的sql整体添加一个前缀
+      prefixOverrides="" 去除整体字符串前面多余的字符
+      suffix="" 为整体添加一个后缀
+      suffixOverrides="" 后面那个多了可以去掉
+    -->
+    <!--我们查询条件就放在where标签中，每个and写在前面，where帮我们自动去除前面多余的and-->
+    <trim prefix="where" prefixOverrides="and" suffixOverrides="and">
       <if test="id!=null">
-         id > #{id}
+        id > #{id} and
       </if>
       <!-- 空串：''
         and: &&
@@ -38,13 +47,80 @@
       -->
 
       <if test="name!=null and !name.equals('') ">
-        and teacherName like #{name}
+        teacherName like #{name} and
       </if>
       <if test="birth!=null">
-        and birth_date &lt; #{birth}
+        birth_date &lt; #{birth} and
       </if>
+    </trim>
+  </select>
+
+  <!--public List<Teacher> getTeacherByIdIn(List<Integer> ids);-->
+  <select id="getTeacherByIdIn" resultMap="teacherMap">
+    select * from t_teacher where id in
+    <!--帮我们遍历集合的：
+      collection=""：指定要遍历的集合的key
+      close="": 以什么结束
+      index="i"：索引
+        如果遍历的是一个list：
+            index：指定的变量保存了当前索引
+            item：就是保存当前遍历的元素的值
+        如果遍历的是一个map：
+            index：指定的变量保存了当前遍历元素的key
+            item：就是保存当前遍历的元素的值
+      item="变量名"：每次遍历出的元素起一个变量名方便引用
+      open="": 以什么开始
+      separator="": 每次遍历元素的分隔符
+    -->
+    <foreach collection="ids" item="id_item" separator="," open="(" close=")">
+      #{id_item}
+    </foreach>
+  </select>
+
+  <!--public List<Teacher> getTeacherByConditionChoose(Teacher teacher);-->
+  <select id="getTeacherByConditionChoose" resultMap="teacherMap">
+    select * from t_teacher
+    <where>
+      <choose>
+        <when test="id!=null">
+          id = #{id}
+        </when>
+        <when test="name != null and !name.equals('')">
+          teacherName = #{name}
+        </when>
+        <when test="birth!=null">
+          birth_date = #{birth}
+        </when>
+        <otherwise>
+          1=1
+        </otherwise>
+      </choose>
     </where>
   </select>
+
+
+  <!--public int updateTeacher(Teacher teacher);-->
+  <update id="updateTeacher">
+    update t_teacher
+    <set>
+      <if test="name!=null and !name.equals('')">
+        teacherName=#{name},
+      </if>
+      <if test="course!=null and !course.equals('')">
+        class_name=#{course},
+      </if>
+      <if test="address!=null and !address.equals('')">
+        address=#{address},
+      </if>
+      <if test="birth!=null and !birth.equals('')">
+        birth_date=#{birth}
+      </if>
+    </set>
+    <where>
+      id=#{id}
+    </where>
+  </update>
+
 
 
 

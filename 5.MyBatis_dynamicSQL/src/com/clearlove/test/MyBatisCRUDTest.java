@@ -4,6 +4,7 @@ import com.clearlove.bean.Teacher;
 import com.clearlove.dao.TeacherDao;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.apache.ibatis.io.Resources;
@@ -47,14 +48,42 @@ public class MyBatisCRUDTest {
     try{
 
       TeacherDao mapper = openSession.getMapper(TeacherDao.class);
-//      Teacher teacher = mapper.getTeacherById(1);
+/*      Teacher teacher = mapper.getTeacherById(1);
+      List<Teacher> list = mapper.getTeacherByCondition(teacher2);*/
+
+//      List<Teacher> list = mapper.getTeacherByIdIn(Arrays.asList(1, 2, 3, 4, 5));
+
       Teacher teacher2 = new Teacher();
-      teacher2.setId(1);
-      teacher2.setName("%a%");
+//      teacher2.setId(1);
+//      teacher2.setName("admin");
 //      teacher2.setBirth(new Date());
-      List<Teacher> list = mapper.getTeacherByCondition(teacher2);
+
+      List<Teacher> list = mapper.getTeacherByConditionChoose(teacher2);
 
       System.out.println(list);
+
+    }finally{
+      openSession.close();
+    }
+  }
+
+  @Test
+  public void test02() throws IOException {
+    //1.根据全局配置文件先得到SqlSessionFactory对象
+//    initSqlSessionFactory();
+
+    //2.得到SqlSession对象
+    SqlSession openSession = sqlSessionFactory.openSession();
+
+
+    try{
+
+      TeacherDao mapper = openSession.getMapper(TeacherDao.class);
+      Teacher teacher = new Teacher();
+      teacher.setId(1);
+      teacher.setName("hahaha");
+      mapper.updateTeacher(teacher);
+      openSession.commit();
 
     }finally{
       openSession.close();
