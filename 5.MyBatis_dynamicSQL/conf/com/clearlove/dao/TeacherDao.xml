@@ -14,9 +14,13 @@
 
   </resultMap>
 
+  <!--抽取可重用的sql语句-->
+  <sql id="selectSql">select * from t_teacher</sql>
+
   <!--public Teacher getTeacherById(Integer id);-->
   <select id="getTeacherById" resultMap="teacherMap">
-    select * from t_teacher where id=#{id}
+    <include refid="selectSql"></include>
+    where id=#{id}
   </select>
 
 
@@ -44,8 +48,36 @@
       <!-- 空串：''
         and: &&
         or: ||
+        if标签：判断 传入非常强大的判断条件
+        OGNL表达式：对象导航图
+          Person
+            ===lastName
+            ===email
+            ===Address
+              ===city
+              ===province
+              ===Street
+                ===adminName
+                ===info
+                ===perCount
+        方法、静态方法、构造器....
+        在mybatis中，传入的参数可以用来做判断;
+        额外还有两个东西
+        _parameter: 代表传入来的参数；
+          1. 传入了单个参数，_parameter就代表这个参数
+          1. 传入了多个参数，_parameter就代表多个参数集合起来的map
+        _databaseId: 代表当前环境
+          如果配置了databaseIdProvider：_databaseId就有值
       -->
+         <!--if test="_parameter!=null"></if>-->
+<!--         <if test="_databaseId=='mysql'">
 
+         </if>
+          <if test="_databaseId=='oracle'">
+
+          </if>-->
+        <!--绑定一个表达式的值到一个变量-->
+<!--        <bind name="_name" value="'%'+name+'%'"/>-->
       <if test="name!=null and !name.equals('') ">
         teacherName like #{name} and
       </if>
@@ -72,9 +104,11 @@
       open="": 以什么开始
       separator="": 每次遍历元素的分隔符
     -->
-    <foreach collection="ids" item="id_item" separator="," open="(" close=")">
-      #{id_item}
-    </foreach>
+    <if test="ids.size >0">
+      <foreach collection="ids" item="id_item" separator="," open="(" close=")">
+        #{id_item}
+      </foreach>
+    </if>
   </select>
 
   <!--public List<Teacher> getTeacherByConditionChoose(Teacher teacher);-->

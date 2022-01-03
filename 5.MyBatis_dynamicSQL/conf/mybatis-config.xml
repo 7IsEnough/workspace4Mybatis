@@ -33,6 +33,10 @@
       </environment>
     </environments>
 
+  <databaseIdProvider type="DB_VENDOR">
+    <property name="MySQL" value="mysql"/>
+  </databaseIdProvider>
+
 
 
     <!--7.写好的sql映射文件需要使用mappers注册进来-->
