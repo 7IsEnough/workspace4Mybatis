@@ -1,12 +1,13 @@
 package com.clearlove.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author promise
  * @date 2021/12/21 - 22:42
  */
-public class Teacher {
+public class Teacher implements Serializable {
 
   private Integer id;
 

@@ -110,4 +110,23 @@ public class MyBatisCRUDTest {
     openSession.close();
 //    openSession2.close();
   }
+
+  @Test
+  public void test04() throws Exception {
+    SqlSession openSession = sqlSessionFactory.openSession();
+    SqlSession openSession2 = sqlSessionFactory.openSession();
+
+    TeacherDao teacherDao1 = openSession.getMapper(TeacherDao.class);
+    TeacherDao teacherDao2 = openSession2.getMapper(TeacherDao.class);
+
+    // 第一个dao查询1号teacher
+    Teacher teacher = teacherDao1.getTeacherById(1);
+    System.out.println(teacher);
+    openSession.close();
+
+    // 第二个dao查询1号teacher
+    Teacher teacher2 = teacherDao2.getTeacherById(1);
+    System.out.println(teacher2);
+    openSession2.close();
+  }
 }

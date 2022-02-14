@@ -4,7 +4,8 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.clearlove.dao.TeacherDao">
-
+  <!--开启二级缓存-->
+  <cache></cache>
   <resultMap id="teacherMap" type="com.clearlove.bean.Teacher">
     <id property="id" column="id"></id>
     <result property="address" column="address"></result>

@@ -9,6 +9,8 @@
     <setting name="lazyLoadingEnabled" value="true"/>
     <!--开启属性按需加载-->
     <setting name="aggressiveLazyLoading" value="false"/>
+    <!--开启全局缓存开关-->
+    <setting name="cacheEnabled" value="true"/>
   </settings>
 
 
