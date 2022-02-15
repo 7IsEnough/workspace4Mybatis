@@ -111,6 +111,10 @@ public class MyBatisCRUDTest {
 //    openSession2.close();
   }
 
+  /**
+   *
+   * @throws Exception
+   */
   @Test
   public void test04() throws Exception {
     SqlSession openSession = sqlSessionFactory.openSession();
@@ -127,6 +131,37 @@ public class MyBatisCRUDTest {
     // 第二个dao查询1号teacher
     Teacher teacher2 = teacherDao2.getTeacherById(1);
     System.out.println(teacher2);
+    openSession2.close();
+  }
+
+  /**
+   * 1.不会出现 一级缓存和二级缓存有同一个数据
+   *    二级缓存：一级缓存关闭了就有了
+   *    一级缓存：二级缓存中没有此数据，就会看一级缓存，一级缓存没有就去查数据库
+   *              数据库的查询结果就放在一级缓存中
+   * 2. 任何时候都是先看二级缓存，再看一级缓存，如果大家都没有就去查询数据库
+   * 二 ==> 一 ==> 库
+   */
+  @Test
+  public void test05() {
+    SqlSession openSession = sqlSessionFactory.openSession();
+    TeacherDao teacherDao = openSession.getMapper(TeacherDao.class);
+    Teacher teacher = teacherDao.getTeacherById(1);
+    System.out.println(teacher);
+    openSession.close();
+
+    SqlSession openSession2 = sqlSessionFactory.openSession();
+    TeacherDao teacherDao2 = openSession2.getMapper(TeacherDao.class);
+    Teacher teacher2 = teacherDao2.getTeacherById(1);
+    Teacher teacher3 = teacherDao2.getTeacherById(1);
+    System.out.println(teacher2);
+    System.out.println(teacher3);
+
+    System.out.println("以下是查询二号teacher");
+    Teacher teacher4 = teacherDao2.getTeacherById(2);
+    System.out.println(teacher4);
+    Teacher teacher5 = teacherDao2.getTeacherById(2);
+    System.out.println(teacher5);
     openSession2.close();
   }
 }
