@@ -149,6 +149,7 @@ public class MyBatisCRUDTest {
     Teacher teacher = teacherDao.getTeacherById(1);
     System.out.println(teacher);
     openSession.close();
+    System.out.println("=================");
 
     SqlSession openSession2 = sqlSessionFactory.openSession();
     TeacherDao teacherDao2 = openSession2.getMapper(TeacherDao.class);

@@ -19,7 +19,8 @@
   <sql id="selectSql">select * from t_teacher</sql>
 
   <!--public Teacher getTeacherById(Integer id);-->
-  <select id="getTeacherById" resultMap="teacherMap">
+  <!--useCache:是否使用二级缓存,默认是true-->
+  <select id="getTeacherById" resultMap="teacherMap" useCache="true">
     <include refid="selectSql"></include>
     where id=#{id}
   </select>
@@ -135,7 +136,7 @@
 
 
   <!--public int updateTeacher(Teacher teacher);-->
-  <update id="updateTeacher">
+  <update id="updateTeacher" flushCache="true">
     update t_teacher
     <set>
       <if test="name!=null and !name.equals('')">
