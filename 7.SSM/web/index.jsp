@@ -11,6 +11,6 @@
     <title>$Title$</title>
   </head>
   <body>
-  $END$
+  <a href="getTea?id=1">查询teacher在success页面显示</a>
   </body>
 </html>

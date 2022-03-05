@@ -12,5 +12,6 @@
 </head>
 <body>
 <h1>成功！</h1>
+${teacher}
 </body>
 </html>
