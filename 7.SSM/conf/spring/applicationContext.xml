@@ -4,7 +4,8 @@
   xmlns:context="http://www.springframework.org/schema/context"
   xmlns:aop="http://www.springframework.org/schema/aop"
   xmlns:tx="http://www.springframework.org/schema/tx"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+  xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
 
 
   <!--Spring除了控制器不要，剩下的业务组件都要，包括dao，包括service-->
@@ -38,10 +39,11 @@
 
 
   <!--需要把每一个dao接口的实现加入到ioc容器中-->
-  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-    <!--指定dao接口所在的包-->
-    <property name="basePackage" value="com.clearlove.dao"></property>
-  </bean>
+<!--  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
+<!--    &lt;!&ndash;指定dao接口所在的包&ndash;&gt;-->
+<!--    <property name="basePackage" value="com.clearlove.dao"></property>-->
+<!--  </bean>-->
+  <mybatis-spring:scan base-package="com.clearlove.dao"/>
 
   <!--4.配置事务控制；配置事务管理器，让他控制住数据源里的链接的关闭和提交-->
   <bean id="tm" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
