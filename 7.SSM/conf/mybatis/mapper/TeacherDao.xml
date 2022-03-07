@@ -1,23 +1,24 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="com.clearlove.dao.TeacherDao">
-
-
-  <resultMap id="teacherMap" type="com.clearlove.bean.Teacher">
-    <id property="id" column="id"></id>
-    <result property="address" column="address"></result>
-    <result property="birth" column="birth_date"></result>
-    <result property="course" column="class_name"></result>
-    <result property="name" column="teacherName"></result>
-
-  </resultMap>
-
-  <!--public Teacher getTeacherById(Integer id);-->
-  <select id="getTeacherById" resultMap="teacherMap">
-    select * from t_teacher where id=#{id}
-  </select>
+	
+	<resultMap type="com.clearlove.bean.Teacher" id="teacherMap">
+		<id property="id" column="id" />
+		<result property="address" column="address" />
+		<result property="birth" column="birth_date" />
+		<result property="course" column="class_name" />
+		<result property="name" column="teacherName" />
+	</resultMap>
+	<!--public List<Teacher> getTeachers();  -->
+	<select id="getTeachers" resultMap="teacherMap">
+		select * from t_teacher
+	</select>
+	
+	<!-- public Teacher getTeacherById(Integer id); -->
+	<select id="getTeacherById" resultMap="teacherMap">
+		select * from t_teacher where id=#{id}
+	</select>
 
 </mapper>

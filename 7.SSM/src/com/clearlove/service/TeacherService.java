@@ -1,29 +1,34 @@
 package com.clearlove.service;
 
-import com.clearlove.bean.Teacher;
-import com.clearlove.dao.TeacherDao;
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * @author promise
- * @date 2022/3/5 - 18:40
- */
+import com.clearlove.bean.Teacher;
+import com.clearlove.dao.TeacherDao;
+
 @Service
 public class TeacherService {
+	
+//	@Autowired
+//	private SqlSessionFactory factory;
+	
+	@Autowired
+	private TeacherDao teacherDao;
+	
 
-//  @Autowired
-//  private TeacherDao teacherDao;
+	public Teacher getTeacher(Integer id) {
+		// TODO Auto-generated method stub
+		return teacherDao.getTeacherById(id);
+	}
 
-  @Autowired
-  private SqlSessionFactory factory;
 
-  public Teacher getTeacher(Integer id){
-    SqlSession sqlSession = factory.openSession();
-    TeacherDao teacherDao = sqlSession.getMapper(TeacherDao.class);
-    return teacherDao.getTeacherById(id);
-  }
+	public List<Teacher> getAll() {
+		
+		return teacherDao.getTeachers();
+	}
+	
 }

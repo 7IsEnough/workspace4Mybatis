@@ -1,13 +1,14 @@
 package com.clearlove.dao;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.clearlove.bean.Teacher;
 
-/**
- * @author promise
- * @date 2022/3/5 - 18:53
- */
 public interface TeacherDao {
-
-  public Teacher getTeacherById(Integer id);
+	
+	public Teacher getTeacherById(Integer id);
+	public List<Teacher> getTeachers();
 
 }
